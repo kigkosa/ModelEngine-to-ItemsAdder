@@ -1,0 +1,36 @@
+# request skript-reflect 
+import:
+	java.io.File
+	org.apache.commons.io.FileUtils
+variables:
+	{datefile} = ""
+
+function getdate() :: number:
+    if new File("plugins/ModelEngine/resource pack.zip").exists():
+        set {_file} to new File("plugins/ModelEngine/resource pack.zip")
+        return {_file}.lastModified()
+on load:
+    if new File("plugins/ModelEngine/resource pack.zip").exists():
+        set {datefile} to getdate()
+
+# has permission modelengine.command.reload
+on command:
+    if sender is a player:
+        if sender has permission "modelengine.command.reload":
+            if command is "meg":
+                if new File("plugins/ModelEngine/resource pack.zip").exists():
+                    wait 10 second
+                    set {_datefile2} to getdate()
+                    if {datefile} is not {_datefile2}:
+                        if new File("plugins/ItemsAdder/contents").exists():
+                            set {_f_model_en} to new File("plugins/ItemsAdder/contents/modelengine")
+                            if {_f_model_en}.exists():
+                                FileUtils.cleanDirectory({_f_model_en})
+                            new File("plugins/ItemsAdder/contents/modelengine/resourcepack").mkdirs()
+                            FileUtils.copyDirectory(new File("plugins/ModelEngine/resource pack/assets"),new File("plugins/ItemsAdder/contents/modelengine/resourcepack"))
+                            make console execute command "iazip"
+                            send "&f[&aMEG&f] &e&lCoppy File To Modelengine"
+                        else if new File("plugins/ItemsAdder/data").exists():
+                            FileUtils.copyDirectory(new File("plugins/ModelEngine/resource pack/assets"),new File("plugins/ItemsAdder/data/resource_pack/assets"),true)
+                            make console execute command "iazip"
+                            send "&f[&aMEG&f] &e&lCoppy File To Modelengine"                     
