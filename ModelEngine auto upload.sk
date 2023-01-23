@@ -17,7 +17,7 @@ on load:
 on command:
     if sender is a player:
         if sender has permission "modelengine.command.reload":
-            if complete command is "meg reload model" or "meg reload":
+            if complete command is "meg reload models" or "meg reload":
                 if new File("plugins/ModelEngine/resource pack.zip").exists():
                     wait 10 second
                     set {_datefile2} to getdate()
